@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  test_multi_stage_tflow:
+    build: .
+    image: tflow-test-build
