@@ -1,7 +1,7 @@
 # Build tflow cause they suck with version support
 # Define base image, pin at stretch 9.6
 
-FROM debian:9.6-slim
+FROM debian:9.6-slim as builder
 LABEL maintainer="tarfeef101"
 
 # Set to non-interactive mode as container should not be entered
@@ -104,3 +104,7 @@ RUN export PATH=$PATH:/root/bin && \
     cd /opt/tensorflow && \
     ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /opt && \
     ls /opt
+
+# Copy just installer to reduce image size drastically
+FROM scratch
+COPY --from=builder /opt/tensorflow-1.11.0-cp27-cp27mu-linux_x86_64.whl /opt/tensorflow-1.11.0-cp27-cp27mu-linux_x86_64.whl
