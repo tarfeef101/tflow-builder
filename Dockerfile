@@ -1,7 +1,7 @@
 # Build tflow cause they suck with version support
-# Define base image, pin at stretch 9.6
+# Define base image, in this case debian stretch w/ python3
 
-FROM debian:9.6-slim
+FROM python:3.6-slim-stretch
 LABEL maintainer="tarfeef101"
 
 # Set to non-interactive mode as container should not be entered
@@ -11,7 +11,7 @@ SHELL ["/bin/bash", "-c"]
 # Install required packages, etc
 RUN apt -y update && \
     apt -y upgrade && \
-    apt -y install curl wget git bzip2 unzip python3 python-dev python-pip python3-dev python3-pip && \
+    apt -y install curl wget git bzip2 unzip && \
     apt purge && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
