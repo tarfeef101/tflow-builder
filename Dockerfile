@@ -79,10 +79,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libcudnn7-dev=$CUDNN_VERSION-1+cuda10.1 && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN apt-get update && apt-get install -y --no-install-recommends \
-#    libnvinfer6=6.0.1-1+cuda10.1 \
-#    libnvinfer-dev=6.0.1-1+cuda10.1 \
-#    libnvinfer-plugin6=6.0.1-1+cuda10.1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libnvinfer6=6.0.1-1+cuda10.1 \
+    libnvinfer-dev=6.0.1-1+cuda10.1 \
+    libnvinfer-plugin6=6.0.1-1+cuda10.1 \
+    libnvinfer-plugin-dev=6.0.1-1+cuda10.1
 
 # install Bazel
 RUN wget https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh && \
@@ -97,16 +98,16 @@ RUN cd /opt && \
     
 RUN export PATH=$PATH:/root/bin && \
     export TF_NEED_CUDA=1 && \
-    export TF_NEED_TENSORRT=0 && \
+    export TF_NEED_TENSORRT=1 && \
     export TF_CUDA_VERSION=10.1 && \
     export TF_CUDNN_VERSION=7.6.5 && \
     export TF_CUBLAS_VERSION=10.2.1 && \
     export TF_NCCL_VERSION=2.4.8 && \
-    #export TF_TENSORRT_VERSION=6 && \
+    export TF_TENSORRT_VERSION=6 && \
     export TF_CUDA_PATHS=/usr/local/cuda,/usr/lib/x86_64-linux-gnu,/usr&& \
     cd /opt/tensorflow && \
     ./configure && \
-    bazel build --config=opt --config=cuda tensorflow/tools/pip_package:build_pip_package
+    bazel build tensorflow/tools/pip_package:build_pip_package
 
 RUN export PATH=$PATH:/root/bin && \
     cd /opt/tensorflow && \
